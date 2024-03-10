@@ -1,4 +1,3 @@
-#Design goals
 The primary design goals for Transform Service Version 2 are as follows:
 • Seamless integration with Temporal for efficient task scheduling.
 • A comprehensive business process ensures that file conversion tasks always report accurate
