@@ -1,0 +1,43 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "protoc-go",
+            "type": "shell",
+            "command": "./gen-proto.sh",
+            "options": {
+                "cwd": "${workspaceFolder}/src/services"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "protoc-python",
+            "type": "shell",
+            "command": "./gen-proto.sh",
+            "options": {
+                "cwd": "${workspaceFolder}/src/worker/services"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "go build -o ${workspaceFolder}/bin/transform2",
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

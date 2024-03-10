@@ -1,0 +1,43 @@
+syntax = "proto3";
+package zetaverse2;
+
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "cn.zixel.jumeaux.zetaverse2.lib";
+option java_outer_classname = "Zetaverse2Service";
+option go_package = "./;services";
+
+service ZetaverseService{
+  rpc QueryZeta3DTemplate(C2S_QueryZeta3DTemplateRequest) returns (C2S_QueryZeta3DTemplateResponse);
+  rpc ReleaseZeta3DAsset(C2S_ReleaseZeta3DAssetRequest) returns (google.protobuf.Empty);
+}
+
+message C2S_QueryZeta3DTemplateRequest{
+  string companyId = 10;
+}
+
+message Zeta3DTemplate {
+  string template = 10;
+  string name = 20;
+}
+
+message C2S_QueryZeta3DTemplateResponse {
+  repeated Zeta3DTemplate templates = 10;
+}
+
+message C2S_ReleaseZeta3DAssetRequest{
+  enum PublicationType {
+    ASSET = 0;
+    SHOWROOM = 1;
+  }
+
+  PublicationType pubType = 10;
+  string projectId = 20;
+  string projectName = 30;
+  string companyId = 40;
+  string userId = 50;
+  string token = 60;
+  optional string template = 65;
+  optional string url = 70;
+}

@@ -1,0 +1,173 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: $APP_NAME-logs-pvc
+  namespace: $K8S_NAMESPACE
+  annotations:
+    nfs.io/storage-path: /logs/$APP_NAME
+spec:
+  storageClassName: nfs-client
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+
+#版本号，可以通过 kubectl api-versions 命令进行获取当前支持的版本
+apiVersion: apps/v1
+#Kubernetes资源类型，部署应用类型，为ReplicaSet和Pod的创建提供一种声明式的定义方法
+#无需手动创建ReplicaSet/Replication Controller和Pod，使用Deployment支持滚动升级和回滚等特性
+kind: Deployment
+#该资源元数据
+metadata:
+  #该资源名称，决定了Pod的显示名称
+  name: $APP_NAME
+  #该资源所属的命名空间
+  namespace: $K8S_NAMESPACE
+  # 自定义的标签列表,key-value键值对
+  labels:
+    name: $APP_NAME
+#该资源的详细定义
+spec:
+  # 指明哪个pod被管理，这里我们指定了name为{{$APP_NAME}}
+  selector:
+    matchLabels:
+      name: $APP_NAME
+  # 指定运行的Pod数量，它会根据selector来进行选择，会将选择到的Pod维持在{{.replicas}}个的数目量
+  replicas: $K8S_REPLICA_COUNT
+  # 扩容时创建Pod的模板
+  template:
+    #元数据
+    metadata:
+      #标签列表
+      labels:
+        name: $APP_NAME
+    spec:
+      serviceAccount: config-reader
+      # pod中的容器列表
+      containers:
+        # 容器名称
+        - name: $APP_NAME
+          # 容器镜像名称
+          image: $K8S_IMAGE_URL:$K8S_IMAGE_TAG
+          # 镜像抓取的策略，其中有Always,IfNotPresent,Never
+          # Always=>每次都会重新下载镜像
+          # IfNotPresent=>如果本地又镜像则使用，否则下载镜像
+          # Never=>仅使用本地镜像
+          imagePullPolicy: IfNotPresent
+          # 容器需要暴露的端口号列表,注意凡是监听0.0.0.0地址的端口，即使没有设置containerPort参数，都可以被访问
+          ports:
+            # 端口的名称
+            - name: http
+              # 容器需要监听的端口
+              containerPort: $K8S_HTTP_PORT
+            - name: grpc
+              containerPort: $K8S_GRPC_PORT
+          # 资源限制和资源请求的设置
+          resources:
+            # 通常我们会把request设置为一个比较小的数值，这个值根据项目情况而定，需求限制，也叫软限制
+            requests:
+              cpu: $K8S_CPU_REQUEST
+              memory: $K8S_MEM_REQUEST
+            #最大限制，也叫硬限制，通常requests和limits要一起配置，避免资源使用不合理出现问题
+            limits:
+              cpu: $K8S_CPU_LIMIT
+              memory: $K8S_MEM_LIMIT
+          env:
+            - name: PAAS_NAMESPACE  # bootstrap.xml中配置的configmap的namespace
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          # 容器挂载路径
+          volumeMounts:
+            - name: conf
+              mountPath: /conf
+            - name: logs
+              mountPath: $APP_LOG_PATH  # 在容器中的路径
+              subPath: $APP_NAME  # 在挂载卷中的子路径
+          # 对Pod内容器健康检查的设置
+          # 存活探针livenessProbe: 用于判断容器是否存活(running)，如果livessProbe探针探测到不健康，则kubelet会杀掉该容器，并根据容器的重启策略做相应的处理，不配的话K8S会认为一直是Success
+          # 判断是否存活，不存活则重启容器
+          # 其中有exec、httpGet、tcpSocket这3种配置
+          # exec: 在容器内部执行一个命令，如果该命令返回码为0，则表明容器健康
+          # httpGet: 通过容器的IP地址、端口号及路径通过用httpGet方法，如果响应的状态码stateCode大于等于200且小于400则认为容器健康
+          # tcpSocket: 通过容器的IP地址和端口执行tcpSocket检查，如果能够建立tcpSocket连接，则表明容器健康
+          livenessProbe:
+            httpGet:
+              # 健康检查路径，也就是应用的健康检查路径
+              path: $APP_LIVENESS_PATH
+              # 访问的容器的端口名字或者端口号
+              port: $APP_HTTP_PORT
+              scheme: HTTP
+            # 容器启动后开始探测之前需要等多少秒，如应用启动一般30s的话，就设置为 30s，设置启动探针startProbe后可不等待
+#            initialDelaySeconds: 60
+            # 探测的超时时间，默认 1s，最小 1s
+            timeoutSeconds: 3
+            # 健康检查失败后，最少连续健康检查成功多少次才被认定成功，默认值为1。最小值为1。
+            successThreshold: 1
+            # 最少连续多少次失败才视为失败。默认值为3。最小值为1
+            failureThreshold: 3
+            # 执行探测的频率（多少秒执行一次）。默认为10秒。最小值为1
+            periodSeconds: 10
+          # 就绪探针redinessProbe: 用于判断容器是否启动完成（ready），可以接收请求，如果该探针探测到失败，则Pod状态会被修改。Endpoint Controller将从ServiceEndpoint中删除包含该容器的所在Pod的Endpoint
+          # kubernetes 判断容器是否启动成功,否可以接受外部流量
+          readinessProbe:
+            httpGet:
+              # 健康检查路径，也就是应用的健康检查路径
+              path: $APP_READINESS_PATH
+              # 端口号
+              port: $APP_HTTP_PORT
+              scheme: HTTP
+            # 容器启动后开始探测之前需要等多少秒，如应用启动一般30s的话，就设置为 30s，设置启动探针startProbe后可不等待
+#            initialDelaySeconds: 60
+            # 探测的超时时间，默认 1s，最小 1s
+            timeoutSeconds: 3
+            # 健康检查失败后，最少连续健康检查成功多少次才被认定成功，默认值为1。最小值为1。
+            successThreshold: 1
+            # 最少连续多少次失败才视为失败。默认值为3。最小值为1
+            failureThreshold: 3
+            # 执行探测的频率（多少秒执行一次）。默认为10秒。最小值为1
+            periodSeconds: 10
+          # 启动探针startupProbe：成功一次后，才交由存活探针livenessProbe接管
+          # 针对慢启动应用livenessProbe延迟启动时间不好确定问题的优化措施
+          startupProbe: # 最长容器启动15*10+30=180s内liveness和readiness探针不会执行
+            httpGet:
+              path: $APP_STARTUP_PATH
+              port: $APP_HTTP_PORT
+            # 最少连续多少次失败才视为失败
+            failureThreshold: 10
+            # 两次执行的间隔时间
+            periodSeconds: 10
+            # 启动延时时间
+            initialDelaySeconds: 60
+      volumes:
+        - name: conf
+          configMap:
+            name: $APP_NAME-conf
+        - name: logs
+          persistentVolumeClaim:
+            claimName: logs-nfs-pvc
+      imagePullSecrets:
+        - name: $K8S_IMAGE_SECRET
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $APP_NAME-svc
+  namespace: $K8S_NAMESPACE
+  labels:
+    name: $APP_NAME
+spec:
+  selector:
+    name: $APP_NAME
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: $APP_HTTP_PORT
+    - name: grpc
+      protocol: TCP
+      port: 9400
+      targetPort: $APP_GRPC_PORT

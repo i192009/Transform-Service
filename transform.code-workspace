@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "src",
+			"name": "src"
+		},
+		{
+			"path": "framework"
+		}
+	],
+
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"src": true,
+			"framework": true
+		},
+		"cmake.sourceDirectory": "${workspaceFolder}/src/worker/zcad/libzcad",
+		"cmake.buildDirectory": "${workspaceFolder}/src/worker/zcad/libzcad/build"
+	}
+}

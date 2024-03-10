@@ -1,0 +1,557 @@
+syntax = "proto3";
+
+package structure;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "cn.zixel.organization.management.lib";
+option java_outer_classname = "OrgMagProto";
+option go_package = "./;services";
+
+// 服务定义
+service OrgMagService {
+  // 创建公司
+  rpc CreateCompany(CompanyCreateRequest) returns (CompanyCreateReply) {}
+  // 删除公司
+  rpc DeleteCompany(CompanyDeleteRequest) returns (CompanyDeleteReply) {}
+  // 更新公司
+  rpc UpdateCompany(CompanyUpdateRequest) returns (CompanyUpdateReply) {}
+  // 查询公司
+  rpc QueryCompany(C2S_QueryCompanyReq_t) returns (C2S_QueryCompanyRpn_t) {}
+  //查询用户公司列表
+  rpc GetCompanyListById(GetCompanyListByIdRequest) returns (GetCompanyListByIdReply) {}
+  rpc GetCompanyListByUid(C2S_GetCompanyListByUidReq_t) returns (GetCompanyListByIdReply) {}
+
+  //根据openId查询用户信息
+  rpc listUserByOpenId(C2S_ListUserByOpenIdReq) returns (C2S_ListUserByOpenIdRpn) {}
+
+  //根据openId查询用户信息
+  rpc listUserByUid(C2S_ListUserByUIdReq) returns (C2S_ListUserByOpenIdRpn) {}
+
+  // 添加企业用户
+  rpc addCompanyUser(C2S_AddCompanyUserReq) returns(C2S_AddCompanyUserRpn) {}
+
+  // 添加企业外部联系人
+  rpc addCompanyOutsideUser(C2S_AddCompanyOutsideUserReq) returns(C2S_AddCompanyOutsideUserRpn) {}
+
+  rpc deleteUser(C2S_DeleteUserReq) returns(C2S_DeleteUserRpn) {}
+
+  rpc queryUsers(C2S_UserQueryReq) returns(C2S_UserQueryRpn) {}
+
+  // 根据企业id获得企业信息
+  rpc getCompanyById(C2S_GetCompanyByIdReq) returns(CompanyMsg) {}
+
+  //添加已经存在的用户到企业中
+  rpc addExistUser(C2S_AddExistUserReq) returns(C2S_AddExistUserRpn) {}
+
+  rpc UpdateUser(C2S_UpdateUserReq_t) returns(C2S_UpdateUserRpn_t) {}
+
+  rpc SetUserRole(C2S_SetUserRoleReq_t) returns(C2S_SetUserRoleRpn_t) {}
+}
+
+//请求参数
+message CompanyCreateRequest {
+  string openId = 1;     // 需要设置为超管的用户的 openId
+  string company = 2;     // 公司名称
+  bool onlyCreateCompany = 3; // 是否仅创建企业, 不添加管理员, 该值为false或不传入时, openId必传且有效
+  optional CompanyStageEnum companyStage = 10; // 签约阶段
+}
+
+message CompanyCreateReply {
+  string companyId = 1;      // 节点id
+}
+
+message CompanyDeleteRequest {
+  string openId = 1;     // 用户openId
+  string companyId = 2;    // 节点id
+}
+
+message CompanyDeleteReply {
+  string companyId = 1;  // 删除的节点数量
+}
+
+message CompanyUpdateRequest {
+  string openId = 1;     // 当前操作用户的openId
+  string companyId = 2;  //公司id
+  string company = 3;     // 公司名称
+  optional bool skipAuthCheck = 4; // 是否跳过权限校验, 默认为false
+}
+
+message CompanyUpdateReply {
+  string openId = 1;     // 用户openId
+
+}
+
+message GetCompanyListByIdRequest {
+  string appId = 1;      // 应用ID
+  string openId = 2;     // 用户openId
+}
+
+message C2S_GetCompanyListByUidReq_t {
+  string uid = 10; // uid
+  // 账号标识符，只能为账号phone
+  // 提前被邀请加入企业的用户，刚注册登录时，企业服务可能尚未来得及处理用户创建事件
+  // 此时除了通过uid查询外，还需要额外通过账号标识符来获取企业列表，以确保查询到用户所在的企业
+  string accountIdentifier = 20;
+}
+
+message CompanyMsg {
+  string nodeId = 1;      // 应用ID
+  string company = 3;     // 公司名称
+  string companyId = 4;  //公司id
+  string source = 5;     // 资源
+  int64 updateTime = 6; //更改时间
+  string updateBy = 7; //更改人
+  repeated UserInfo adminInfo = 8;
+  int64 createTime = 9; //更改时间
+  string stage = 10; // 签约阶段
+}
+
+message GetCompanyListByIdReply {
+  repeated CompanyMsg companys = 1;
+}
+
+message C2S_ListUserByOpenIdReq {
+  string companyId = 1;      // 企业Id
+  repeated string openId = 2;     // 用户openId
+  optional int32 infoType = 10; // 获取信息层级, 2-租户层用户信息,支持 EmployeeId、UnionId、OpenId, 3 - 应用层用户信息,支持 UnionId、OpenId, 默认:3
+}
+
+message C2S_ListUserByOpenIdRpn  {
+
+  repeated UserInfo userInfo = 1;
+}
+
+message C2S_ListUserByUIdReq {
+  string companyId = 10;      // 企业Id
+  repeated string uid = 20;     // 用户openId
+  string appId = 30; // 调用的应用id
+  optional int32 infoType = 40; // 获取信息层级, 2-租户层用户信息,支持 EmployeeId、UnionId、OpenId, 3 - 应用层用户信息,支持 UnionId、OpenId, 默认:3
+}
+
+message UserInfo {
+  optional string openId = 1;      // openId
+  optional string name = 2;      // 姓名
+  optional string enName = 3;      // 英文名
+  optional string avatar = 4;      // 头像
+  optional string avatarBig = 5;      // 大头像
+  optional string avatarMiddle = 6;      // 中头像
+  optional string avatarThumb = 7;      // 头像缩略图
+  optional string email = 8;      // 邮箱
+  optional string phone = 9;      // 手机
+  optional string nodeId = 10;      // 节点ID
+  optional string isInside = 14;      // 是否是企业内部成员, 0:内部, 1:外部
+  optional string companyId = 15;      // 企业id
+  optional string company = 16;      // 企业名称
+  map<string, string> feishuOpenId = 17;  //飞书opendId
+  optional string zixelUserId = 18;
+  optional string feishuUnionId = 19;      // 飞书unionId
+
+  string role = 20; // 角色, 1:管理员/2:普通成员
+  bool linkedUser = 21; // 是否与用户系统进行了关联
+}
+
+message C2S_AddCompanyUserReq{
+  string name = 1; // 姓名
+  string emailOrMobile = 2; // 邮箱或手机号
+  string role = 3; // 角色, 1:管理员/2:普通成员
+  string companyId = 4; // 企业id
+
+  optional bool autoCreateUserInfo = 10; // 是否自动创建用户信息, 默认为false, 只有存在用户信息时, 才能进行权限,席位等设置
+}
+
+message C2S_AddCompanyUserRpn{
+
+}
+
+message C2S_AddCompanyOutsideUserReq{
+  string name = 1; // 姓名
+  string emailOrMobile = 2; // 邮箱或手机号
+  string role = 3; // 角色, 1:管理员/2:普通成员
+  string companyId = 4; // 企业id
+  string company = 5; // 外部联系人真实企业名称
+
+  optional bool autoCreateUserInfo = 10; // 是否自动创建用户信息, 默认为false, 只有存在用户信息时, 才能进行权限,席位等设置
+}
+
+message C2S_AddCompanyOutsideUserRpn{
+
+}
+
+message C2S_DeleteUserReq{
+  string nodeId = 1; // 用户节点id
+  string userOpenId = 2; // 操作用户的openId
+}
+
+message C2S_DeleteUserRpn{
+
+}
+
+message C2S_UserQueryReq{
+  string nodeId = 1; // 节点ID
+  string isInside = 2; // 是否是企业内部成员, 0:内部, 1:外部
+  string appId = 3;
+  string companyId = 4; // 企业id
+  string search = 5; // 搜索数据, 目前可按姓名进行搜索
+  int32 page = 6; // 页码
+  int32 size = 7; // 每页数量
+  repeated OrderItem orders = 8; // 排序方式
+  optional bool linkedUser = 9; // 是否和用户系统进行了关联
+  string userGroupCode = 10; //用户组code
+  optional int64 skip = 15;
+  optional string role = 20; // 角色, 1:管理员/2:普通成员
+  optional int32 infoType = 30; // 获取信息层级, 2-租户层用户信息,支持 EmployeeId、UnionId、OpenId, 3 - 应用层用户信息,支持 UnionId、OpenId, 默认:3
+}
+
+message C2S_UserQueryRpn{
+  int64 total = 1; // 总记录数
+  repeated UserInfo userInfo = 2;
+}
+
+message OrderItem{
+  string key = 1; // 排序字段
+  string order = 2; // 排序方向，asc升序，deac降序
+}
+
+message C2S_GetCompanyByIdReq{
+  string companyId = 1; // 企业id
+}
+
+message C2S_AddExistUserReq{
+  string name = 10; // 姓名
+  optional string emailOrMobile = 20; // 邮箱或手机号
+  string role = 30; // 角色, 1:管理员/2:普通成员
+  string companyId = 40; // 企业id
+  optional string company = 50; // 添加的是企业外部联系人时, 这个字段需要给入
+  string openId = 60;      // openId
+  optional string zixelUserId = 70; // userid, 不传入时, 会根据openid去获取
+  string isInside = 80; // 是否是企业内部成员, 0:内部, 1:外部
+
+}
+
+message C2S_AddExistUserRpn{
+
+}
+
+enum CompanyStageEnum {
+  NULL_CompanyStageEnum = 0;
+  TRIAL = 10; // 试用
+  BUSINESS_OPPORTUNITY = 20; // 商机
+  PAY = 30; // 付费
+  OVERDUE = 40; // 过期
+
+}
+
+message C2S_QueryCompanyReq_t {
+
+  enum CompanySourceEnum {
+    NULL_CompanySourceEnum = 0;
+    FEI_SHU = 10; // 飞书
+    WEB = 20; // web页面
+    DINGTALK = 30; // 钉钉
+    HUAWEI = 40; // 华为
+    WECHAT = 50; // 微信
+  }
+
+  string name = 10; // 企业名称
+  string adminSearch = 20; // 管理员信息
+  CompanySourceEnum companySource = 30; // 企业来源
+  CompanyStageEnum companyStage = 40; // 企业阶段
+  int32 page = 50; // 页码
+  int32 size = 60; // 每页数量
+  repeated OrderItem orders = 70; // 排序方式
+  string invokeAppId = 80;
+  optional int32 convertIdFlag = 90; // 转换id标志位, 高位到低位分别表示: 转换拥有者/转换企业管理员; 例如: 仅需要转换企业管理员时传入:0b01, 仅需要转换拥有者时传入:0b10, 需要转换拥有者和企业管理员时传入:0b11
+}
+
+message C2S_QueryCompanyRpn_t {
+  int64 total = 10;
+  repeated CompanyMsg companyList = 1;
+
+}
+
+message ErrorInfo {
+  int32 code = 10;
+  string message = 20;
+  message serviceInfo{
+    string name = 10;
+    string uuid = 20;
+  }
+}
+
+/*******************************************
+                企业服务管理接口V2
+ *******************************************/
+service OrgMagServiceV2 {
+  // 检查用户是否被匹配模式命中
+  rpc CheckPatternUser(C2S_PatternUserCheckReq_t) returns(S2C_PatternUserCheckRpn_t) {}
+  // 获取用户在企业下的身份
+  // 用户不在企业下时将抛出异常
+  rpc GetUserRole(C2S_UserRoleGetReq_t) returns(S2C_UserRoleGetRpn_t) {}
+
+  // 根据uid更新用户信息
+  rpc UpdateUserByUid(C2S_UpdateUserByUidReq_t) returns(C2S_UpdateUserByUidRpn_t) {}
+
+  // 根据id获取获取下属对象, 只向下查找一层子节点，下属对象类型可能为部门/用户组/成员
+  rpc ListChildById(C2S_ListChildByIdReq_t) returns (C2S_ListChildByIdRpn_t) {}
+}
+
+message C2S_PatternUserCheckReq_t {
+  // pattern信息
+  string type = 10;       // 描述符类型，目前仅支持 group_id
+  string identifier = 15; // 描述符,如 gp_123456
+  optional google.protobuf.Struct attributes = 20;  // 可选参数，补充描述，供检查时使用
+
+  // 待检查用户信息 1-uid, 2-eid
+  // 传入的用户id类型，不同pattern type支持的userType不同
+  //  - group_id 支持 1, 2
+  //  其它待扩充，企业服务中一般使用eid判断
+  optional int32 userType = 30; // 如不传入，将在 userId、employeeId 下均作查询
+  repeated string users = 35;   // userType对应的id集合
+}
+
+message S2C_PatternUserCheckRpn_t {
+  repeated bool containStatus = 10;  // 包含情况，与传入的users数组一一对应，true表示包含，false表示不包含
+}
+
+message C2S_UserRoleGetReq_t {
+  string corpId = 10; // 企业id标识
+
+  // 用户标识,以下任取其一,优先选择使用eid
+  optional string employeeId = 20; // 用户eid
+  optional string userId = 30; // 用户uid
+}
+
+message S2C_UserRoleGetRpn_t {
+
+  // 用户角色定义
+  // 注意企业所有人与另外两个角色不互斥，同时为企业所有人及企业管理员时，将返回更高权限的企业所有人
+  enum UserRoleEnum {
+    OWNER = 0;    // 企业所有人
+    ADMIN = 10;   // 企业管理员
+    MEMBER = 20;  // 企业普通成员
+  }
+  UserRoleEnum role = 10; // 用户在企业下的角色
+
+}
+
+/*******************************************
+                用户组管理接口
+ *******************************************/
+service GroupService {
+  // 批量查询用户组详情
+  rpc BatchGetGroups(C2S_GroupsBatchGetReq_t) returns (S2C_GroupsBatchGetRpn_t) {}
+
+  // 创建用户组
+  rpc CreateGroup(C2S_CreateGroupReq_t) returns (C2S_CreateGroupRpn_t) {}
+
+  // 更新用户组基本信息
+  rpc UpdateGroup(C2S_UpdateGroupReq_t) returns (C2S_UpdateGroupRpn_t) {}
+
+  // 删除用户组
+  rpc DeleteGroup(C2S_DeleteGroupReq_t) returns (C2S_DeleteGroupRpn_t) {}
+
+  // 向用户组添加对象
+  rpc AddToGroup(C2S_AddToGroupReq_t) returns (C2S_AddToGroupRpn_t) {}
+
+  // 移除用户组下属对象
+  rpc RemoveFromGroup(C2S_RemoveFromGroupReq_t) returns (C2S_RemoveFromGroupRpn_t) {}
+}
+
+message C2S_GroupsBatchGetReq_t {
+  repeated string ids = 10;       // 用户组id集合，重复的id将被移除
+}
+// 用户组信息返回
+// exist为false时，仅errorMessage、groupId字段返回
+message GroupGetRpn {
+  bool exist = 1;                     // 请求用户组信息是否存在
+  string errorMessage = 2;                 // 用户组不存在时的错误提示信息
+
+  string id = 10;    // 用户组id, 如 "gp_123456789"
+  string refId = 20;    // 如果从引用节点转换得来，引用节点id, 如gp_2345
+  string name = 30;    // 用户组名称, 如 "zcp项目组"
+  string desc = 40;    // 描述, 如 "zcp项目小组"
+  int64 createTime = 50;    // 创建时间, 时间戳，单位ms
+  int64 modifyTime = 60;    // 最后修改时间, 时间戳，单位ms
+}
+
+message S2C_GroupsBatchGetRpn_t {
+  // 用户组信息获取失败时，该用户组亦将返回，但exist为false
+  repeated GroupGetRpn groups = 10;
+}
+
+message C2S_UpdateUserReq_t {
+  string userNodeId = 10; // 成员节点id
+  optional string name = 20; // 成员名称
+  optional string phone = 30; // 成员手机号
+  optional string email = 40; // 成员邮箱
+  optional bool skipAuthCheck = 50; // 是否跳过权限校验, 默认为false
+  string operatorOpenId = 60; // 操作者openId
+}
+
+message C2S_UpdateUserRpn_t {
+  string userNodeId = 10; // 成员节点id
+}
+
+message C2S_SetUserRoleReq_t {
+
+  string userNodeId = 10; // 成员节点id
+  string role = 20; // 角色, 1:管理员/2:普通成员
+  optional bool isOnlyManager = 30; // 是否只有1个管理员, 设置为true时, 会将其他企业成员角色置为普通成员
+  optional bool skipAuthCheck = 40; // 是否跳过权限校验, 默认为false
+  string operatorOpenId = 50; // 操作者openId
+}
+
+message C2S_SetUserRoleRpn_t {
+  string userNodeId = 10; // 成员节点id
+}
+
+message C2S_CreateGroupReq_t {
+
+  string parentId = 10; // 父节点id, 父节点只可能为企业或用户组类型
+  Group group = 20; // 用户组信息
+  optional bool skipAuthCheck = 30; // 是否跳过权限校验, 默认为false
+
+  optional string operatorOpenId = 40; // 操作者openId, 当skipAuthCheck为true时必须传入, 否则可不传入, 当然, 建议无论如何都传入
+}
+
+message C2S_CreateGroupRpn_t {
+  string groupId = 10; // 用户组id, 如 "gp_123456789"
+}
+
+message C2S_UpdateGroupReq_t {
+  string groupId = 10; // 用户组id, 如 "gp_123456789"
+  Group group = 20; // 用户组信息
+  optional bool skipAuthCheck = 30; // 是否跳过权限校验, 默认为false
+  optional string operatorOpenId = 40; // 操作者openId, 当skipAuthCheck为true时必须传入, 否则可不传入, 当然, 建议无论如何都传入
+}
+
+message C2S_UpdateGroupRpn_t {
+}
+
+message C2S_DeleteGroupReq_t {
+  string groupId = 10; // 用户组id, 如 "gp_123456789"
+  optional bool skipAuthCheck = 20; // 是否跳过权限校验, 默认为false
+  optional string operatorOpenId = 30; // 操作者openId, 当skipAuthCheck为true时必须传入, 否则可不传入, 当然, 建议无论如何都传入
+}
+
+message C2S_DeleteGroupRpn_t {
+}
+
+message C2S_AddToGroupReq_t {
+
+  string groupId = 10; // 用户组id, 如 "gp_123456789"
+  repeated string memberIds = 20; // 成员对象id列表
+  repeated string deptIds = 30; // 部门对象id列表
+  repeated string groupIds = 40; // 用户组对象id列表
+  optional bool skipAuthCheck = 50; // 是否跳过权限校验, 默认为false
+  optional string operatorOpenId = 60; // 操作者openId, 当skipAuthCheck为true时必须传入, 否则可不传入, 当然, 建议无论如何都传入
+}
+
+message C2S_AddToGroupRpn_t {
+
+  repeated string memberRefIds = 10; // 成员对象引用id列表
+  repeated string deptRefIds = 20; // 部门对象id列表
+  repeated string groupRefIds = 30; // 用户组对象id列表
+}
+
+message C2S_RemoveFromGroupReq_t {
+  string groupId = 10; // 用户组id, 如 "gp_123456789"
+  repeated string removeIds = 20; // 待移除对象id列表, 被移除对象id格式必须以rf_开头
+  optional bool skipAuthCheck = 30; // 是否跳过权限校验, 默认为false
+  optional string operatorOpenId = 40; // 操作者openId, 当skipAuthCheck为true时必须传入, 否则可不传入, 当然, 建议无论如何都传入
+}
+
+message C2S_RemoveFromGroupRpn_t {
+}
+
+//message C2S_GetGroupInfoReq_t {
+//  string groupId = 10; // 用户组id, 如 "gp_123456789"
+//}
+//
+//message C2S_GetGroupInfoRpn_t {
+//  string groupId = 10; // 用户组id, 如 "gp_123456789"
+//  string refId = 20;    // 如果从引用节点转换得来，引用节点id, 如gp_2345
+//  string name = 30;    // 用户组名称, 如 "zcp项目组"
+//  string desc = 40;    // 描述, 如 "zcp项目小组"
+//  google.protobuf.Timestamp createTime = 50;    // 创建时间
+//  google.protobuf.Timestamp modifyTime = 60;    // 最后修改时间
+//}
+
+message C2S_ListChildByIdReq_t {
+  string id = 10; // 用户组id, 如 "gp_123456789"
+  repeated string types = 20; // 返回子节点类型, 用户组下子节点只可能为1-部门 2-用户组 3-成员待查询对象类型, 目前仅支持 user
+  optional string name = 30; // 模糊查询,注意本条件无法查询子节点中的引用节点
+
+  optional string sortField = 40; // 排序字段，支持id、createTime(注册时间)、loginTime(最近登录时间)，默认为id。注意注册时间为用户首次登录时间，非账号注册时间
+  optional string sortDir = 50; // 排序方向,支持asc(升序)、desc(降序),默认为asc
+
+  optional int64 skip = 60; // 跳过的记录数, 与分页pageNum字段只能择一传入，同时传入时优先使用skip，均不传入时设置pageNum默认为1
+  optional int32 pageNum = 70; // 页码, 不传入时默认为1，传入0表示查询全部数据, 与skip字段只能择一传入，同时传入时优先使用skip，均不传入时设置pageNum默认为1
+  optional int32 pageSize = 80; // 每页数量, 不传入时默认为20
+}
+
+message C2S_ListChildByIdRpn_t {
+  int32 totalPage = 10; // 总页数
+  int32 pageNum = 20; // 当前页数
+  int32 pageSize = 30; // 每页条数
+  int64 total = 40; // 总记录数
+  repeated NodeInfo list = 50; // 子节点信息
+}
+
+message NodeInfo {
+
+  // 以下为基础信息, 所有类型的节点都会存在
+  string id = 5;    // 节点id, 如 "gp_123456789"
+  string type = 10; // 对象类型 0-企业 1-部门 2-用户组 3-成员
+  string name = 15; // 对象名称
+  bool isRef = 20; // 是否未完成引用节点转换
+  string refId = 25; // 原始引用id
+  bool isThird = 30; // 是否来自第三方
+
+  // 以下信息在type!=3时存在
+  optional string desc = 33; // 描述
+
+  // 以下为企业节点信息, 仅type=0时存在
+  optional string stage = 35; // 企业所处运营阶段 BUSINESS_OPPORTUNITY,OVERDUE,PAY,TRIAL
+  optional string source = 40; // 企业来源
+  optional string owner = 45; // 企业创建人eid
+  repeated string admins = 50; // 企业管理员eid
+
+  // 以下为部门/用户组节点信息, 仅type=1或type=2时存在
+  optional int64 entityCount = 55; // 下属对象数量
+
+  // 以下为成员节点信息, 仅type=3时存在
+  optional bool accountExist = 60; // 对应账户是否已注册
+  optional bool external = 63; // 是否是外部联系人
+  optional bool eCorpName = 65; // 所属外部企业
+  optional string userId = 68; // 用户userId
+  optional string employeeId = 70; // 用户employeeId
+  optional string avatar = 73; // 用户头像下载链接
+  optional string avatarThumb = 75; // 用户头像(小)下载链接
+  optional string phone = 78; // 用户联系方式-电话
+  optional string email = 80; // 用户联系方式-邮箱
+}
+
+message Group {
+
+  optional string name = 10;    // 用户组名称, 如 "zcp项目组", 创建用户组时必须传入
+  optional string desc = 20;    // 描述, 如 "zcp项目小组"
+}
+
+message C2S_UpdateUserByUidReq_t {
+  string uid = 10; // 成员uid
+  repeated string companyIds = 20; // 企业id, 如果有这个值, 则只更新这些企业下的用户信息, 优先级比updateAllCompany高
+  optional bool updateAllCompany = 30; // 更新所有企业下的用户信息, 默认false, 如果为false, 则companyIds必须传入
+  optional string name = 40; // 成员名称
+  optional string phone = 50; // 成员手机号
+  optional string email = 60; // 成员邮箱
+  optional bool skipAuthCheck = 70; // 是否跳过权限校验, 默认为false
+  optional string operatorOpenId = 80; // 操作者openId, 当skipAuthCheck为true时必须传入, 否则可不传入, 当然, 建议无论如何都传入
+  optional string invokeService = 90; // 调用的服务, 用于区分调用方, 目前当调用方为jumeaux-user时, 不会再次触发更新租户层用户信息的事件
+}
+
+message C2S_UpdateUserByUidRpn_t {
+}

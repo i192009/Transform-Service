@@ -1,0 +1,8 @@
+[L]2023-12-15 16:03:38.174|13_50511194695415809| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-15 16:03:38.181|14_50511194712193025| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:organization:jumeaux-organization-svc:9400"| 
+[L]2023-12-15 16:03:38.183|15_50511194712258561| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:storage:jumeaux-storage-svc:9500"| 
+[L]2023-12-15 16:03:38.184|16_50511194712324097| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:messagebus:zixelmq-bus-svc:9090"| 
+[L]2023-12-15 16:03:38.186|17_50511194712389633| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:account:jumeaux-account-svc:9400"| 
+[L]2023-12-15 16:03:38.189|18_50511194712455169| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:user:jumeaux-user-svc:9400"| 
+[L]2023-12-15 16:03:38.193|19_50511194728970241| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:appmanager:app-manager-svc:9400"| 
+[L]2023-12-15 16:03:38.208|20_50511194745747457| FAT |DESKTOP-4PAEICH|pool-1-thread-1|grpcserver.go|26|Init|System|Nil|"Unable to create client failed reaching server: last connection error: connection error: desc = "transport: Error while dialing: dial tcp [::1]:7233: connectex: No connection could be made because the target machine actively refused it.""| 

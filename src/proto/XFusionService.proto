@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+option java_multiple_files = true;
+option java_package = "cn.zixel.xdm.xfusionservice.lib";
+option java_outer_classname = "XFusionServiceProto";
+option go_package = "./;services";
+
+service DeployRelatedService{
+    // 导出应用数据
+    rpc ExportDeloyAPPData(C2S_ExportDeployAPPDataRequest) returns (S2C_ExportDeployAPPDataResponse){}
+    // 导入应用数据
+    rpc ImportDeloyAPPData(C2S_ImportDeployAPPDataRequest) returns (google.protobuf.Empty){}
+}
+
+message C2S_ExportDeployAPPDataRequest{
+    repeated ExportDeployAppDataItem apps = 10;//需要导出的app列表
+    string targetPath = 20;//目标路径
+}
+message ExportDeployAppDataItem{
+    int64 appId = 10;//应用Id
+    bool containDesignData = 20;//是否需要导出编辑态数据
+}
+message S2C_ExportDeployAPPDataResponse{
+    string targetPath = 10;//目标路径
+}
+message C2S_ImportDeployAPPDataRequest{
+    string targetPath = 10;//目标路径
+    bool overwriteAll = 20;//是否覆盖所有,true:覆盖所有,false:镜像数据只新增不存在的，设计态数据靠overwriteDesignData控制
+    bool overwriteDesignData = 30;//当overwriteAll为false时有用，是否覆盖编辑态数据,true:清空后导入，false:只新增不存在数据
+    string tenantId = 40;//租户Id
+}

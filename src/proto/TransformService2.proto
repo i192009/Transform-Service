@@ -1,0 +1,406 @@
+syntax = "proto3";
+package TransformService2;
+import "google/protobuf/struct.proto";
+
+option go_package = "./;services";
+
+service TransformV2 {
+  rpc CreateJob(C2S_CreateJobReq) returns (S2C_CreateJobRpn);
+  rpc GetJobInfo(C2S_GetJobInfoReq) returns (S2C_GetJobInfoRpn) {}
+  rpc CancelJob(C2S_CancelJobReq) returns (S2C_CancelJobRpn) {}
+}
+
+service TenantManagement {
+  rpc SetTenantConfig(C2S_SetTanentConfigReq_t) returns (C2S_SetTanentConfigRpn_t);
+  rpc SetDefaultTenantConfig(C2S_SetTanentConfigReq_t) returns (C2S_SetTanentConfigRpn_t);
+}
+
+// Job Management Service
+service JobManagement {
+  rpc AddJobType(C2S_AddJobTypeReq_t) returns (S2C_AddJobTypeRpn_t);
+  rpc RemoveJobType(C2S_RemoveJobTypeReq_t) returns (S2C_RemoveJobTypeRpn_t);
+  rpc SetJobType(C2S_SetJobTypeReq_t) returns (S2C_SetJobTypeRpn_t);
+  rpc GetJobType(C2S_GetJobTypeReq_t) returns (C2S_GetJobTypeRpn_t);
+  rpc QueryJobType(C2S_QueryJobTypeReq_t) returns (C2S_QueryJobTypeRpn_t);
+
+
+  //Job Set Interfaces
+  rpc AddJobSet(C2S_AddJobSetReq_t) returns (C2S_AddJobSetRpn_t);
+  rpc RemoveJobSet(C2S_RemoveJobSetReq_t) returns (C2S_RemoveJobSetRpn_t);
+  rpc SetJobSet(C2S_SetJobSetReq_t) returns (C2S_SetJobSetRpn_t);
+  rpc GetJobSet(C2S_GetJobSetReq_t) returns (C2S_GetJobSetRpn_t);
+  rpc QueryJobSet(C2S_QueryJobSetReq_t) returns (C2S_QueryJobSetRpn_t);
+  rpc SetJobFixedArguments(C2S_SetJobFixedArgumentsReq_t) returns (C2S_SetJobFixedArgumentsRpn_t);
+}
+
+service ResourcePoolManagement {
+  rpc AddResourcePool(C2S_AddResourcePoolReq_t) returns (C2S_AddResourcePoolRpn_t);
+  rpc RemoveResourcePool(C2S_RemoveResourcePoolReq_t) returns (C2S_RemoveResourcePoolRpn_t);
+  rpc SetResourcePool(C2S_SetResourcePoolReq_t) returns (C2S_SetResourcePoolRpn_t);
+  rpc GetResourcePool(C2S_GetResourcePoolReq_t) returns (C2S_GetResourcePoolRpn_t);
+  rpc QueryResourcePool(C2S_QueryResourcePoolReq_t) returns (C2S_QueryResourcePoolRpn_t);
+}
+
+
+message C2S_SetTanentConfigReq_t{
+  string PoolId = 10;
+  string JobSetId = 20;
+  repeated string AscPoolsId = 30 ;
+}
+
+message C2S_SetTanentConfigRpn_t{
+  
+  string ConfigId = 5 ;
+  string StatusCode = 10; 
+  string Message = 20; 
+}
+
+
+
+
+
+
+
+message JobType {
+  string JobTypeId = 5 ;
+  int32 SystemSpecification = 10; // 1 for POD, 2 for ECS
+  string ImageUrl = 20; // Docker image URL for POD, system image for ECS
+  // repeated string ExecutionScript = 7; // ZIP Format task execution script
+  string ReScript = 30; // Used to estimate the resources consumed by the task
+  string ScScript = 40; // Used to collect task status and progress from the output of the command line
+  string JeScript = 50; // Task entry command
+  repeated string FixedParameters = 60; // Relevant parameters for the task
+}
+
+message C2S_QueryJobTypeRpn_t {
+  string StatusCode = 10 ;
+  repeated JobType JobTypes = 20 ;
+}
+
+
+message C2S_QueryJobTypeReq_t {
+  string JobTypeIdFilter = 10;
+  int32 SystemSpecificationFilter = 20;
+  string ImageUrlFilter = 30;
+  string ReScriptFilter = 40;
+  string ScScriptFilter = 50;
+  string JeScriptFilter = 60;
+  repeated string FixedParametersFilter = 70 ;
+  int32 skip = 80 ;
+  int32 page = 90 ;
+  int32 limit = 100 ;
+}
+
+
+message C2S_QueryJobSetReq_t {
+
+  string JobSetIdFilter = 5 ;
+  // Filter by ResourcePoolId
+  string JobTypeIdFilter = 10;
+  // Filter by Name
+  string NameFilter = 20;
+  string TotalFilter = 30;
+  string FixedParameterFilter = 60;
+  int32 skip = 80 ;
+  int32 page = 90 ;
+  int32 limit = 100 ;
+
+}
+
+
+message C2S_QueryJobSetRpn_t {
+  int64 Code = 10 ;
+  repeated JobSet Jobsets = 20 ;
+}
+
+
+message JobSet {
+string JobSetId = 10 ;
+  string JobTypeId = 20 ; //Id for the JobType
+    string Name = 30 ; //Name for the TaskSet
+    int64 Total = 40 ; //Number of Total Task Sets Association
+    string FixedParameters = 50 ; 
+}
+
+
+message C2S_GetJobSetReq_t {
+  string JobTypeId = 10 ;
+}
+
+message C2S_GetJobSetRpn_t {
+  int64 Code = 10 ;
+  JobSet Jobset = 20 ;
+}
+
+message C2S_SetJobFixedArgumentsReq_t{
+  string ID = 10 ; //ID for the Job Set
+  repeated string Arguments = 20 ; // List of the Arguments to update the Job Set
+}
+
+message C2S_SetJobFixedArgumentsRpn_t{
+  int64 Code = 20 ; //Request Response Code for the Set Job Fixed Arguments Request
+  string Message = 30 ; //Request Response Message for the Set Job Fixed Arguments Request
+}
+
+message C2S_AddJobSetReq_t {
+  string JobTypeId = 10 ; //Id for the JobType
+    string Name = 20 ; //Name for the TaskSet
+    int64 Total = 30 ; //Number of Total Task Sets Association
+    string FixedParameters = 40 ; //Other Parameters For TaskSet
+}
+
+message C2S_SetJobSetReq_t{
+  string JobSetId = 10 ; //ID for the Task Set to be updated
+  string JobTypeId = 15 ;
+  string Name = 20 ; //Name for the TaskSet
+  int64 Total = 30 ; //Number of Total Task Sets Association
+  string FixedParameters = 40 ; //Other Parameters For TaskSet
+}
+
+message C2S_RemoveJobSetReq_t{
+  string JobSetId = 10 ; //ID for the Job Set to be Deleted
+}
+
+message C2S_RemoveJobSetRpn_t{
+  int64 Code = 20 ; //Request Response Code for the Set Job Set Interface
+  string Message = 30 ; //Request Response Message for the Set Job Set Interface
+}
+
+message C2S_SetJobSetRpn_t{
+  string JobSetId = 10 ; //ID for the updated Task Set
+  int64 Code = 20 ; //Request Response Code for the Set Task Set Interface
+  string Message = 30 ; //Request Response Message for the Set Task Set Interface
+}
+
+message C2S_AddJobSetRpn_t{
+  string JobSetId = 10 ; //ID for the New Added Task Set
+  int64 Code = 20 ; //Request Response Code for the Add Task Set Interface
+  string Message = 30 ; //Request Response Message for the Add Task Set Interface
+}
+
+
+
+
+
+message C2S_GetResourcePoolReq_t {
+  string PoolId = 10 ;
+  optional string PoolName = 20 ;
+}
+
+message C2S_GetResourcePoolRpn_t {
+  ResourcePool Pool = 10 ;
+  optional string Message = 20 ;
+  optional string Code = 30 ;
+}
+
+// Request parameters for querying resource pools
+message C2S_QueryResourcePoolReq_t {
+  // Filter by ResourcePoolId
+  string ResourcePoolIdFilter = 10;
+
+  string NameSpaceFilter = 15; //Temporal NameSpace
+  // Filter by Name
+  string NameFilter = 20;
+  // Filter by IsShared
+  bool IsSharedFilter = 30;
+  // Filter by ScalingStrategy
+  int32 ScalingStrategyFilter = 40;
+  // Filter by ScalingLimit
+  int32 ScalingLimitFilter = 50;
+
+  string CustomFilter = 60;
+
+  int32 skip = 80 ;
+  int32 page = 90 ;
+  int32 limit = 100 ;
+}
+
+// Response parameters for querying resource pools
+message C2S_QueryResourcePoolRpn_t {
+	
+	optional string Code = 10 ;
+	optional string Message = 20 ;
+
+  // List of resource pools matching the query criteria
+  repeated ResourcePool ResourcePools = 30;
+}
+
+// Definition of a resource pool
+message ResourcePool {
+  string ResourcePoolId = 10;
+  string NameSpace = 20; //Temporal NameSpace
+  string Name = 30;
+  bool IsShared = 40;
+  int32 ScalingStrategy = 50;
+  int32 ScalingLimit = 60;
+  int32 QueueLimit = 70;
+  int32 Fixed = 80;
+  int32 DefaultTaskSet = 90;
+  map<string, ResourceLimitOfTask> ResourceLimits = 100;
+}
+
+// Definition of resource limits for a specific task type
+message ResourceLimitOfTask {
+  string JobTypeId = 10;       // Identifier for the task type
+  int32 ScalingLimit = 20; // Limit on how many machines can be used for the task type
+}
+
+// Request parameters for adding a new resource pool
+message C2S_AddResourcePoolReq_t {
+  string Name = 10;         // Display name for the resource pool
+  string NameSpace = 15; //Temporal NameSpace
+  bool isShared = 20;       // Indicates whether the resource pool is shared or not
+  // Shared resource pools can be used jointly by multiple enterprises
+  int32 ScalingStrategy = 30; // Determines whether Scaling is enabled or not
+  int32 ScalingLimit = 40;    // Limit on the upper number of scaling machines
+  int32 QueueLimit = 50;      // Limit on the queue of jobs
+  int32 Fixed = 60;           // Number of reserved machines
+  int32 DefaultTaskSet = 70;  // Default Task Set
+  repeated ResourceLimitOfTask ResourceLimit = 80; // Limits on the number of available machines for each task type
+}
+
+// Response parameters for adding a new resource pool
+message C2S_AddResourcePoolRpn_t {
+  string ResourcePoolId = 10; // Identifier of the newly added resource pool
+  string NameSpace = 15; //Temporal NameSpace
+  string StatusCode = 20;    // Code denoting the service execution status
+  string Message = 30;       // Message from the service after execution
+}
+
+// Request parameters for removing an existing resource pool
+message C2S_RemoveResourcePoolReq_t {
+  string PoolId = 10;        // Identifier of the resource pool to be removed
+}
+
+// Response parameters for removing an existing resource pool
+message C2S_RemoveResourcePoolRpn_t {
+  string StatusCode = 20;    // Code denoting the service execution status
+  string Message = 30;       // Message from the service after execution
+}
+
+// Request parameters for configuring or updating the settings of an existing resource pool
+message C2S_SetResourcePoolReq_t {
+  string ResourcePoolId = 10;             // Identifier of the resource pool to be configured or updated
+  string NameSpace = 15; //Temporal NameSpace
+  string Name = 20;          // Display name for the resource pool
+  bool isShared = 30;        // Indicates whether the resource pool is shared or not
+  // Shared resource pools can be used jointly by multiple enterprises
+  int32 ScalingStrategy = 40; // Determines whether Scaling is enabled or not
+  int32 ScalingLimit = 50;    // Limit on the upper number of scaling machines
+  int32 QueueLimit = 60;      // Limit on the queue of jobs
+  int32 Fixed = 70;           // Number of reserved machines
+  int32 DefaultTaskSet = 80;  // Default Task Set
+  repeated ResourceLimitOfTask ResourceLimit = 90; // Limits on the number of available machines for each task type
+}
+
+// Response parameters for configuring or updating an existing resource pool
+message C2S_SetResourcePoolRpn_t {
+  string ResourcePoolId = 10 ;
+  string StatusCode = 20;    // Code denoting the service execution status
+  string Message = 30;       // Message from the service after execution
+}
+
+
+
+// Request Parameters for Adding a Job Type
+message C2S_AddJobTypeReq_t {
+  int32 SystemSpecification = 10; // 1 for POD, 2 for ECS
+  string ImageUrl = 20; // Docker image URL for POD, system image for ECS
+  // repeated string ExecutionScript = 7; // ZIP Format task execution script
+  string ReScript = 30; // Used to estimate the resources consumed by the task
+  string ScScript = 40; // Used to collect task status and progress from the output of the command line
+  string JeScript = 50; // Task entry command
+  repeated string FixedParameters = 60; // Relevant parameters for the task
+}
+
+// Response Parameters for Adding a Job Type
+message C2S_GetJobTypeReq_t {
+  string JobTypeId = 10; // ID of the task added
+}
+
+message C2S_GetJobTypeRpn_t {
+  JobType JobType = 10 ;
+  string StatusCode = 20 ;
+  string Message = 30 ;
+}
+
+// Response Parameters for Adding a Job Type
+message S2C_AddJobTypeRpn_t {
+  string JobTypeId = 10; // ID of the task added
+  string StatusCode = 20; // Code denoting the service execution
+  string Message = 30; // Message from the service after execution
+}
+
+// Request Parameters for Removing a Job Type
+message C2S_RemoveJobTypeReq_t {
+  string JobTypeId = 10; // ID of the job to be removed
+}
+
+// Response Parameters for Removing a Job Type
+message S2C_RemoveJobTypeRpn_t {
+  string StatusCode = 10; // Code denoting the service execution
+  string Message = 20; // Message from the service after execution
+}
+
+// Request Parameters for Setting/Updating a Job Type
+message C2S_SetJobTypeReq_t {
+  string JobTypeId = 10; // ID of the task to be updated
+  string Image = 20; // Docker image URL for POD, system image for ECS
+  string ReScript = 30; // Used to estimate the resources consumed by the task
+  string ScScript = 40; // Used to collect task status and progress from the output of the command line
+  string JeScript = 50; // Task entry command
+  repeated string FixedParameters = 60; // Relevant parameters for the task
+}
+
+// Response Parameters for Setting/Updating a Job Type
+message S2C_SetJobTypeRpn_t {
+  string JobTypeId = 10; // Relevant task ID that is updated
+  string StatusCode = 20; // Code denoting the service execution
+  string Message = 30; // Message from the service after execution
+}
+
+message C2S_CreateJobReq{
+  int32  jobType = 10;      // Type of service
+  string storageToken = 20; // download and upload token
+  string parameters = 30;   // Job parameters
+}
+
+//Response Paramter
+message S2C_CreateJobRpn{
+  int32 StatusCode = 10;   // Code denoting the service exectuion
+  string Message = 20;     // Message from the service after execution
+  string JobID = 30;       // ID of the Task added
+}
+
+// Get Task Information Request
+message C2S_GetJobInfoReq{
+  string jobId = 10;       // Identifier of the task (required)
+}
+
+// Get Task Information Response
+message S2C_GetJobInfoRpn{
+  int32 StatusCode = 10;   // Code denoting the service exectuion
+  string Message = 20;     // Message from the service after execution
+  JobInfo data = 30;       // Detailed task information
+}
+
+// Cancel Job Request
+message C2S_CancelJobReq{
+  string jobId = 10;      // Identifier of the task (required)
+}
+
+// Cancel Job Response
+message S2C_CancelJobRpn{
+  int32 StatusCode = 10;   // Code denoting the service exectuion
+  string Message = 20;     // Message from the service after execution
+}
+
+message JobInfo{
+  string jobId = 10;      // Identifier of the task
+  string jobType = 20;    // Type of the task
+  string status = 30;     // Status of the task
+  int32 progress = 40;    // Progress of the task
+  string message = 50;    // Message from the task
+  string createdAt = 60;  // Time when the task was created
+  string updatedAt = 70;  // Time when the task was last updated
+}

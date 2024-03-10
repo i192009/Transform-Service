@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "cn.zixel.xdm.databridge.lib";
+option java_outer_classname = "DataBridgeServiceProto";
+option go_package = "./;services";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+
+service DataSyncSerivce{
+    // 推送数据变更
+    rpc PushData(CommonJsonRequest) returns (CommonResponse){}
+    // 创建数据同步任务
+    rpc CreateDataSyncTask(CreateDataSyncTaskRequest) returns (CreateDataSyncTaskResponse){}
+    // 检查模型映射配置
+    rpc CheckModelMappingConfig(CheckModelMappingConfigRequest) returns (CheckModelMappingConfigResponse){}
+    // 查询同步任务列表
+    rpc QueryTasks(QueryTasksRequest) returns (QueryTasksResponse){}
+}
+
+message QueryTasksRequest{
+    PageRequest pageReq = 10;// 分页查询参数
+    string tenantId = 40;// 租户id
+    optional int64 taskType = 20;// 任务类型
+    optional int64 taskStatus = 30;// 任务类型
+}
+
+message QueryTasksResponse{
+    PageResponse page = 10;
+    repeated DataSyncTaskDTO datas = 20;// 数据列表
+}
+
+message DataSyncTaskDTO{
+    CommonDataDTO common = 10;// 数据基础信息
+    string name = 20;// 任务名称
+    int64 type = 30;// 任务类型：0-手动触发拉取数据同步；1-定时拉取数据同步；2-外部推送数据同步
+    string from = 40;// 数据来源
+    int64 targetModelGlobalId = 50;// 目标模型globalId
+    int64 targetModelId = 60;// 目标模型id
+    string targetModel = 70;// 目标模型名称
+    int64 targetEntityGlobalId = 80;// 目标实体globalId
+    int64 targetEntityId = 90;// 目标实体id
+    string targetEntity = 100;// 目标实体名称
+    map<string, google.protobuf.Any> param = 110;// 额外参数
+    int64 status = 120;// 任务状态：0-待执行；1-数据准备完毕；2-数据同步完毕
+    string message = 130;// 任务执行信息
+}
+
+message CommonDataDTO {
+	int64 id =10;// 唯一主键
+	google.protobuf.Timestamp createAt =20;// 创建时间
+	string createBy  =30; // 创建人employeeId
+	google.protobuf.Timestamp updateAt =40;// 更新时间
+	string updateBy =50;// 更新人employeeId
+	bool isDeleted =60;// 逻辑删除标识
+	google.protobuf.Timestamp deleteAt =70;// 逻辑删除时间
+}
+
+message PageRequest{
+    int32 pageNum = 10;// 页数, 从1开始, 不传默认为1
+    int32 pageSize = 20;// 每页个数，不小于1, 不传入时默认为20
+    optional string sortField = 30;// 排序字段，默认按id倒序排序
+    optional string sortDir = 40;// 排序方向,只能为升序asc/降序desc,不传入时默认为降序desc
+    optional string searchKey = 50;// 搜索关键词
+    google.protobuf.Timestamp startCreateTime = 60; // 创建开始时间
+    google.protobuf.Timestamp endCreateTime = 70; // 创建截止时间
+}
+
+message PageResponse{
+    int32 pageNum = 10;// 当前页码
+    int32 pageSize = 20;// 每页大小
+    int32 totalPage = 30;// 总页数
+    int64 total = 40;// 总记录数
+}
+
+message CheckModelMappingConfigRequest{
+    int64 modelGlobalId = 10;
+}
+
+message CheckModelMappingConfigResponse{
+    repeated CheckClassMappingConfigResult results = 10;
+}
+
+message CheckClassMappingConfigResult{
+    int64 id = 10;
+    string name = 20;
+    string tableName = 30;
+    repeated string returnFields = 40;
+    repeated CheckPropertyMappingConfigResult properties = 50;
+}
+
+message CheckPropertyMappingConfigResult{
+    int64 id = 10;
+    string name = 20;
+    string mappingName = 30;
+    bool matched = 40;
+}
+
+message CreateDataSyncTaskResponse{
+    int64 taskId = 10;
+}
+
+message CreateDataSyncTaskRequest{
+    string tenantId =10;// 租户id,必传
+    string env = 20;// preview、test、online,必传
+    string appId = 30;// 必传
+    string version = 40;// preview时指定，不指定使用最新建模数据
+    int64 modelIdGlobalId = 50;// 指定同步模型,必传
+    int64 syncType = 60;// 同步类型：0-手动触发拉取同步；1-定时拉取同步,必传
+    bool isFullSync = 70;// 手动触发时指定，是否全量同步数据，默认为false
+    string latestUpdateAt = 80;// 手动触发时指定，默认为任务执行当前时间
+    string cron = 90;// 定时拉取时指定执行计划,遵循标准cron表达式规范
+}
+
+message CommonJsonRequest{
+    string tenantId = 10;// 租户id
+    int64 pushMethod = 20;// 同步方式：0-新增；1-更新；2-删除
+    bytes data = 30;// 同步数据
+    string from = 40;// 数据来源
+}
+
+message CommonResponse{
+    bool success = 10;// 请求是否成功
+    int64 code = 20;// 请求错误码
+    string message = 30;// 请求错误信息
+}

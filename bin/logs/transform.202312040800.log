@@ -1,0 +1,195 @@
+[L]2023-12-04 12:23:25.256|12_48894520485492737| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-04 12:23:25.266|13_48894520502269953| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:storage:jumeaux-storage-svc:9500"| 
+[L]2023-12-04 12:23:25.268|14_48894520502335489| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:messagebus:zixelmq-bus-svc:9090"| 
+[L]2023-12-04 12:23:25.269|15_48894520502401025| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:account:jumeaux-account-svc:9400"| 
+[L]2023-12-04 12:23:25.272|16_48894520519047169| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:user:jumeaux-user-svc:9400"| 
+[L]2023-12-04 12:23:25.273|17_48894520519112705| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:appmanager:app-manager-svc:9400"| 
+[L]2023-12-04 12:23:25.274|18_48894520519178241| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:organization:jumeaux-organization-svc:9400"| 
+[L]2023-12-04 12:23:25.294|19_48894520552601601| DBG |DESKTOP-4PAEICH|pool-1-thread-2|bus.go|96|func1|System|Nil|"call log.info args = [Listening and serving HTTP on listener what's bind with address  localhost:8742]"| 
+[L]2023-12-04 12:23:25.295|20_48894520552667137| INF |DESKTOP-4PAEICH|pool-1-thread-2|value.go|596|call|System|Nil|"Listening and serving HTTP on listener what's bind with address localhost:8742"| 
+[L]2023-12-04 12:32:12.483|21_48895405030651905| DBG |DESKTOP-4PAEICH|pool-1-thread-3|bus.go|96|func1|System|Nil|"call Quit args = [interrupt]"| 
+[L]2023-12-04 12:32:12.483|22_48895405030717441| DBG |DESKTOP-4PAEICH|pool-1-thread-4|bus.go|96|func1|System|Nil|"call Quit args = [interrupt]"| 
+[L]2023-12-04 12:32:12.483|23_48895405030782977| DBG |DESKTOP-4PAEICH|pool-1-thread-5|bus.go|96|func1|System|Nil|"call ExitRpcServer args = []"| 
+[L]2023-12-04 12:32:12.483|24_48895405030848513| DBG |DESKTOP-4PAEICH|pool-1-thread-6|bus.go|96|func1|System|Nil|"call ExitWebServer args = []"| 
+[L]2023-12-04 12:32:12.486|25_48895405030914049| DBG |DESKTOP-4PAEICH|pool-1-thread-7|bus.go|96|func1|System|Nil|"call log.info args = [grpc server is closeing...]"| 
+[L]2023-12-04 12:32:12.487|26_48895405030979585| DBG |DESKTOP-4PAEICH|pool-1-thread-3|bus.go|100|1|System|Nil|"call Quit error, stack frames :
+    Error Message: reflect: Call with too many input arguments
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:100 (0x192014a)
+    C:/Program Files/Go/src/runtime/panic.go:914 (0x83aede)
+    C:/Program Files/Go/src/reflect/value.go:442 (0x8dd70d)
+    C:/Program Files/Go/src/reflect/value.go:380 (0x8db878)
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:104 (0x19200a4)
+    C:/Program Files/Go/src/runtime/asm_amd64.s:1650 (0x86baa0)
+"| 
+[L]2023-12-04 12:32:12.488|27_48895405047429121| INF |DESKTOP-4PAEICH|pool-1-thread-7|value.go|596|call|System|Nil|"grpc server is closeing..."| 
+[L]2023-12-04 12:32:12.487|28_48895405047494657| WAR |DESKTOP-4PAEICH|pool-1-thread-8|bus.go|85|Publish|System|Nil|"not found handlers in topic:RpcServerExited"| 
+[L]2023-12-04 12:32:12.487|29_48895405047560193| DBG |DESKTOP-4PAEICH|pool-1-thread-4|bus.go|100|1|System|Nil|"call Quit error, stack frames :
+    Error Message: reflect: Call with too many input arguments
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:100 (0x192014a)
+    C:/Program Files/Go/src/runtime/panic.go:914 (0x83aede)
+    C:/Program Files/Go/src/reflect/value.go:442 (0x8dd70d)
+    C:/Program Files/Go/src/reflect/value.go:380 (0x8db878)
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:104 (0x19200a4)
+    C:/Program Files/Go/src/runtime/asm_amd64.s:1650 (0x86baa0)
+"| 
+[L]2023-12-04 12:32:12.488|30_48895405047625729| DBG |DESKTOP-4PAEICH|pool-1-thread-9|bus.go|96|func1|System|Nil|"call WebServerExited args = []"| 
+[L]2023-12-04 12:32:12.488|31_48895405047691265| DBG |DESKTOP-4PAEICH|pool-1-thread-10|bus.go|96|func1|System|Nil|"call log.info args = [web server is closed.]"| 
+[L]2023-12-04 12:32:12.487|32_48895405047756801| DBG |DESKTOP-4PAEICH|pool-1-thread-11|bus.go|96|func1|System|Nil|"call log.info args = [grpc server is closed.]"| 
+[L]2023-12-04 12:32:12.489|33_48895405047822337| DBG |DESKTOP-4PAEICH|pool-1-thread-12|bus.go|96|func1|System|Nil|"call log.error args = [http: Server closed]"| 
+[L]2023-12-04 12:32:12.494|34_48895405047887873| DBG |DESKTOP-4PAEICH|pool-1-thread-13|bus.go|96|func1|System|Nil|"call log.info args = [Web server is closed. exit code =  0]"| 
+[L]2023-12-04 12:32:12.497|35_48895405047953409| ERR |DESKTOP-4PAEICH|pool-1-thread-12|value.go|596|call|System|Nil|"http: Server closed"| 
+[L]2023-12-04 12:32:12.495|36_48895405048018945| INF |DESKTOP-4PAEICH|pool-1-thread-10|value.go|596|call|System|Nil|"web server is closed."| 
+[L]2023-12-04 12:32:12.496|37_48895405064206337| INF |DESKTOP-4PAEICH|pool-1-thread-11|value.go|596|call|System|Nil|"grpc server is closed."| 
+[L]2023-12-04 12:32:12.498|38_48895405064271873| INF |DESKTOP-4PAEICH|pool-1-thread-13|value.go|596|call|System|Nil|"Web server is closed. exit code = 0"| 
+[L]2023-12-04 12:32:15.961|11_48895410869123073| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-04 12:32:15.963|12_48895410869188609| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:account:jumeaux-account-svc:9400"| 
+[L]2023-12-04 12:32:15.965|13_48895410869254145| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:user:jumeaux-user-svc:9400"| 
+[L]2023-12-04 12:32:15.965|14_48895410869319681| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:appmanager:app-manager-svc:9400"| 
+[L]2023-12-04 12:32:15.966|15_48895410869385217| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:organization:jumeaux-organization-svc:9400"| 
+[L]2023-12-04 12:32:15.967|16_48895410869450753| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:storage:jumeaux-storage-svc:9500"| 
+[L]2023-12-04 12:32:15.968|17_48895410869516289| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:messagebus:zixelmq-bus-svc:9090"| 
+[L]2023-12-04 12:32:15.982|18_48895410902677505| DBG |DESKTOP-4PAEICH|pool-1-thread-2|bus.go|96|func1|System|Nil|"call log.info args = [Listening and serving HTTP on listener what's bind with address  localhost:8742]"| 
+[L]2023-12-04 12:32:15.984|19_48895410902743041| INF |DESKTOP-4PAEICH|pool-1-thread-2|value.go|596|call|System|Nil|"Listening and serving HTTP on listener what's bind with address localhost:8742"| 
+[L]2023-12-04 12:32:29.726|20_48895433954572289| DBG |DESKTOP-4PAEICH|pool-1-thread-3|bus.go|96|func1|System|Nil|"call ExitRpcServer args = []"| 
+[L]2023-12-04 12:32:29.726|21_48895433954637825| DBG |DESKTOP-4PAEICH|pool-1-thread-4|bus.go|96|func1|System|Nil|"call Quit args = [interrupt]"| 
+[L]2023-12-04 12:32:29.726|22_48895433954703361| DBG |DESKTOP-4PAEICH|pool-1-thread-5|bus.go|96|func1|System|Nil|"call log.info args = [grpc server is closeing...]"| 
+[L]2023-12-04 12:32:29.726|23_48895433954768897| DBG |DESKTOP-4PAEICH|pool-1-thread-6|bus.go|96|func1|System|Nil|"call ExitWebServer args = []"| 
+[L]2023-12-04 12:32:29.727|24_48895433954834433| INF |DESKTOP-4PAEICH|pool-1-thread-5|value.go|596|call|System|Nil|"grpc server is closeing..."| 
+[L]2023-12-04 12:32:29.727|25_48895433954899969| DBG |DESKTOP-4PAEICH|pool-1-thread-7|bus.go|96|func1|System|Nil|"call log.info args = [grpc server is closed.]"| 
+[L]2023-12-04 12:32:29.726|26_48895433954965505| DBG |DESKTOP-4PAEICH|pool-1-thread-8|bus.go|96|func1|System|Nil|"call Quit args = [interrupt]"| 
+[L]2023-12-04 12:32:29.727|27_48895433955031041| DBG |DESKTOP-4PAEICH|pool-1-thread-4|bus.go|100|1|System|Nil|"call Quit error, stack frames :
+    Error Message: reflect: Call with too many input arguments
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:100 (0x192014a)
+    C:/Program Files/Go/src/runtime/panic.go:914 (0x83aede)
+    C:/Program Files/Go/src/reflect/value.go:442 (0x8dd70d)
+    C:/Program Files/Go/src/reflect/value.go:380 (0x8db878)
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:104 (0x19200a4)
+    C:/Program Files/Go/src/runtime/asm_amd64.s:1650 (0x86baa0)
+"| 
+[L]2023-12-04 12:32:29.728|28_48895433955096577| DBG |DESKTOP-4PAEICH|pool-1-thread-9|bus.go|96|func1|System|Nil|"call WebServerExited args = []"| 
+[L]2023-12-04 12:32:29.729|29_48895433971349505| DBG |DESKTOP-4PAEICH|pool-1-thread-8|bus.go|100|1|System|Nil|"call Quit error, stack frames :
+    Error Message: reflect: Call with too many input arguments
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:100 (0x192014a)
+    C:/Program Files/Go/src/runtime/panic.go:914 (0x83aede)
+    C:/Program Files/Go/src/reflect/value.go:442 (0x8dd70d)
+    C:/Program Files/Go/src/reflect/value.go:380 (0x8db878)
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:104 (0x19200a4)
+    C:/Program Files/Go/src/runtime/asm_amd64.s:1650 (0x86baa0)
+"| 
+[L]2023-12-04 12:32:29.728|30_48895433971415041| DBG |DESKTOP-4PAEICH|pool-1-thread-10|bus.go|96|func1|System|Nil|"call log.error args = [http: Server closed]"| 
+[L]2023-12-04 12:32:29.727|31_48895433971480577| WAR |DESKTOP-4PAEICH|pool-1-thread-11|bus.go|85|Publish|System|Nil|"not found handlers in topic:RpcServerExited"| 
+[L]2023-12-04 12:32:29.728|32_48895433971546113| INF |DESKTOP-4PAEICH|pool-1-thread-7|value.go|596|call|System|Nil|"grpc server is closed."| 
+[L]2023-12-04 12:32:29.730|33_48895433971611649| DBG |DESKTOP-4PAEICH|pool-1-thread-12|bus.go|96|func1|System|Nil|"call log.info args = [Web server is closed. exit code =  0]"| 
+[L]2023-12-04 12:32:29.728|34_48895433971677185| DBG |DESKTOP-4PAEICH|pool-1-thread-13|bus.go|96|func1|System|Nil|"call log.info args = [web server is closed.]"| 
+[L]2023-12-04 12:32:29.731|35_48895433971742721| ERR |DESKTOP-4PAEICH|pool-1-thread-10|value.go|596|call|System|Nil|"http: Server closed"| 
+[L]2023-12-04 12:32:29.732|36_48895433971808257| INF |DESKTOP-4PAEICH|pool-1-thread-12|value.go|596|call|System|Nil|"Web server is closed. exit code = 0"| 
+[L]2023-12-04 12:32:29.733|37_48895433971873793| INF |DESKTOP-4PAEICH|pool-1-thread-13|value.go|596|call|System|Nil|"web server is closed."| 
+[L]2023-12-04 12:32:33.502|11_48895440296359937| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-04 12:32:33.505|12_48895440296425473| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:user:jumeaux-user-svc:9400"| 
+[L]2023-12-04 12:32:33.506|13_48895440296491009| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:appmanager:app-manager-svc:9400"| 
+[L]2023-12-04 12:32:33.507|14_48895440296556545| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:organization:jumeaux-organization-svc:9400"| 
+[L]2023-12-04 12:32:33.508|15_48895440296622081| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:storage:jumeaux-storage-svc:9500"| 
+[L]2023-12-04 12:32:33.509|16_48895440296687617| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:messagebus:zixelmq-bus-svc:9090"| 
+[L]2023-12-04 12:32:33.510|17_48895440313137153| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:account:jumeaux-account-svc:9400"| 
+[L]2023-12-04 12:32:33.520|18_48895440329914369| DBG |DESKTOP-4PAEICH|pool-1-thread-2|bus.go|96|func1|System|Nil|"call log.info args = [Listening and serving HTTP on listener what's bind with address  localhost:8742]"| 
+[L]2023-12-04 12:32:33.520|19_48895440329979905| INF |DESKTOP-4PAEICH|pool-1-thread-2|value.go|596|call|System|Nil|"Listening and serving HTTP on listener what's bind with address localhost:8742"| 
+[L]2023-12-04 15:29:47.241|11_48913280751646721| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-04 15:29:47.255|12_48913280768423937| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:storage:jumeaux-storage-svc:9500"| 
+[L]2023-12-04 15:29:47.258|13_48913280768489473| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:messagebus:zixelmq-bus-svc:9090"| 
+[L]2023-12-04 15:29:47.259|14_48913280768555009| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:account:jumeaux-account-svc:9400"| 
+[L]2023-12-04 15:29:47.260|15_48913280785201153| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:user:jumeaux-user-svc:9400"| 
+[L]2023-12-04 15:29:47.262|16_48913280785266689| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:appmanager:app-manager-svc:9400"| 
+[L]2023-12-04 15:29:47.263|17_48913280785332225| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:organization:jumeaux-organization-svc:9400"| 
+[L]2023-12-04 15:29:47.268|18_48913280785397761| FAT |DESKTOP-4PAEICH|pool-1-thread-1|grpcserver.go|26|Init|System|Nil|"Unable to create client failed reaching server: last connection error: connection error: desc = "transport: Error while dialing: dial tcp [::1]:7233: connectex: No connection could be made because the target machine actively refused it.""| 
+[L]2023-12-04 15:30:25.726|11_48913345310373889| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-04 15:30:25.736|12_48913345327151105| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:user:jumeaux-user-svc:9400"| 
+[L]2023-12-04 15:30:25.737|13_48913345327216641| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:appmanager:app-manager-svc:9400"| 
+[L]2023-12-04 15:30:25.740|14_48913345343928321| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:organization:jumeaux-organization-svc:9400"| 
+[L]2023-12-04 15:30:25.740|15_48913345343993857| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:storage:jumeaux-storage-svc:9500"| 
+[L]2023-12-04 15:30:25.742|16_48913345344059393| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:messagebus:zixelmq-bus-svc:9090"| 
+[L]2023-12-04 15:30:25.743|17_48913345344124929| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:account:jumeaux-account-svc:9400"| 
+[L]2023-12-04 15:30:25.757|18_48913345360705537| DBG |DESKTOP-4PAEICH|pool-1-thread-2|bus.go|96|func1|System|Nil|"call log.info args = [Listening and serving HTTP on listener what's bind with address  localhost:8742]"| 
+[L]2023-12-04 15:30:25.763|19_48913345377482753| INF |DESKTOP-4PAEICH|pool-1-thread-2|value.go|596|call|System|Nil|"Listening and serving HTTP on listener what's bind with address localhost:8742"| 
+[L]2023-12-04 15:33:28.651|20_48913652215986177| DBG |DESKTOP-4PAEICH|pool-1-thread-3|bus.go|96|func1|System|Nil|"call Quit args = [interrupt]"| 
+[L]2023-12-04 15:33:28.651|21_48913652216051713| DBG |DESKTOP-4PAEICH|pool-1-thread-4|bus.go|96|func1|System|Nil|"call Quit args = [interrupt]"| 
+[L]2023-12-04 15:33:28.652|22_48913652216117249| DBG |DESKTOP-4PAEICH|pool-1-thread-3|bus.go|100|1|System|Nil|"call Quit error, stack frames :
+    Error Message: reflect: Call with too many input arguments
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:100 (0x166014a)
+    C:/Program Files/Go/src/runtime/panic.go:914 (0x57aede)
+    C:/Program Files/Go/src/reflect/value.go:442 (0x61d70d)
+    C:/Program Files/Go/src/reflect/value.go:380 (0x61b878)
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:104 (0x16600a4)
+    C:/Program Files/Go/src/runtime/asm_amd64.s:1650 (0x5abaa0)
+"| 
+[L]2023-12-04 15:33:28.651|23_48913652216182785| DBG |DESKTOP-4PAEICH|pool-1-thread-5|bus.go|96|func1|System|Nil|"call ExitWebServer args = []"| 
+[L]2023-12-04 15:33:28.651|24_48913652216248321| DBG |DESKTOP-4PAEICH|pool-1-thread-6|bus.go|96|func1|System|Nil|"call ExitRpcServer args = []"| 
+[L]2023-12-04 15:33:28.654|25_48913652216313857| DBG |DESKTOP-4PAEICH|pool-1-thread-4|bus.go|100|1|System|Nil|"call Quit error, stack frames :
+    Error Message: reflect: Call with too many input arguments
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:100 (0x166014a)
+    C:/Program Files/Go/src/runtime/panic.go:914 (0x57aede)
+    C:/Program Files/Go/src/reflect/value.go:442 (0x61d70d)
+    C:/Program Files/Go/src/reflect/value.go:380 (0x61b878)
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:104 (0x16600a4)
+    C:/Program Files/Go/src/runtime/asm_amd64.s:1650 (0x5abaa0)
+"| 
+[L]2023-12-04 15:33:28.659|26_48913652232763393| DBG |DESKTOP-4PAEICH|pool-1-thread-7|bus.go|96|func1|System|Nil|"call log.info args = [grpc server is closeing...]"| 
+[L]2023-12-04 15:33:28.659|27_48913652232828929| WAR |DESKTOP-4PAEICH|pool-1-thread-8|bus.go|85|Publish|System|Nil|"not found handlers in topic:RpcServerExited"| 
+[L]2023-12-04 15:33:28.659|28_48913652232894465| DBG |DESKTOP-4PAEICH|pool-1-thread-9|bus.go|96|func1|System|Nil|"call log.info args = [web server is closed.]"| 
+[L]2023-12-04 15:33:28.659|29_48913652232960001| DBG |DESKTOP-4PAEICH|pool-1-thread-10|bus.go|96|func1|System|Nil|"call log.info args = [grpc server is closed.]"| 
+[L]2023-12-04 15:33:28.668|30_48913652233025537| INF |DESKTOP-4PAEICH|pool-1-thread-10|value.go|596|call|System|Nil|"grpc server is closed."| 
+[L]2023-12-04 15:33:28.659|31_48913652233091073| DBG |DESKTOP-4PAEICH|pool-1-thread-11|bus.go|96|func1|System|Nil|"call log.error args = [http: Server closed]"| 
+[L]2023-12-04 15:33:28.659|32_48913652249540609| DBG |DESKTOP-4PAEICH|pool-1-thread-12|bus.go|96|func1|System|Nil|"call WebServerExited args = []"| 
+[L]2023-12-04 15:33:28.664|33_48913652249606145| INF |DESKTOP-4PAEICH|pool-1-thread-7|value.go|596|call|System|Nil|"grpc server is closeing..."| 
+[L]2023-12-04 15:33:28.672|34_48913652249671681| DBG |DESKTOP-4PAEICH|pool-1-thread-13|bus.go|96|func1|System|Nil|"call log.info args = [Web server is closed. exit code =  0]"| 
+[L]2023-12-04 15:33:28.675|35_48913652249737217| INF |DESKTOP-4PAEICH|pool-1-thread-13|value.go|596|call|System|Nil|"Web server is closed. exit code = 0"| 
+[L]2023-12-04 15:33:28.667|36_48913652266317825| INF |DESKTOP-4PAEICH|pool-1-thread-9|value.go|596|call|System|Nil|"web server is closed."| 
+[L]2023-12-04 15:33:28.670|37_48913652266383361| ERR |DESKTOP-4PAEICH|pool-1-thread-11|value.go|596|call|System|Nil|"http: Server closed"| 
+[L]2023-12-04 15:33:32.946|11_48913659413411841| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-04 15:33:32.951|12_48913659430189057| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:organization:jumeaux-organization-svc:9400"| 
+[L]2023-12-04 15:33:32.952|13_48913659430254593| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:storage:jumeaux-storage-svc:9500"| 
+[L]2023-12-04 15:33:32.954|14_48913659430320129| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:messagebus:zixelmq-bus-svc:9090"| 
+[L]2023-12-04 15:33:32.955|15_48913659430385665| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:account:jumeaux-account-svc:9400"| 
+[L]2023-12-04 15:33:32.958|16_48913659430451201| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:user:jumeaux-user-svc:9400"| 
+[L]2023-12-04 15:33:32.960|17_48913659446966273| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:appmanager:app-manager-svc:9400"| 
+[L]2023-12-04 15:33:32.973|18_48913659463743489| DBG |DESKTOP-4PAEICH|pool-1-thread-2|bus.go|96|func1|System|Nil|"call log.info args = [Listening and serving HTTP on listener what's bind with address  localhost:8742]"| 
+[L]2023-12-04 15:33:32.975|19_48913659463809025| INF |DESKTOP-4PAEICH|pool-1-thread-2|value.go|596|call|System|Nil|"Listening and serving HTTP on listener what's bind with address localhost:8742"| 
+[L]2023-12-04 15:44:46.959|20_48914790214547457| DBG |DESKTOP-4PAEICH|pool-1-thread-3|bus.go|96|func1|System|Nil|"call Quit args = [interrupt]"| 
+[L]2023-12-04 15:44:46.960|21_48914790231324673| DBG |DESKTOP-4PAEICH|pool-1-thread-3|bus.go|100|1|System|Nil|"call Quit error, stack frames :
+    Error Message: reflect: Call with too many input arguments
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:100 (0x166014a)
+    C:/Program Files/Go/src/runtime/panic.go:914 (0x57aede)
+    C:/Program Files/Go/src/reflect/value.go:442 (0x61d70d)
+    C:/Program Files/Go/src/reflect/value.go:380 (0x61b878)
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:104 (0x16600a4)
+    C:/Program Files/Go/src/runtime/asm_amd64.s:1650 (0x5abaa0)
+"| 
+[L]2023-12-04 15:44:46.960|22_48914790231390209| DBG |DESKTOP-4PAEICH|pool-1-thread-4|bus.go|96|func1|System|Nil|"call Quit args = [interrupt]"| 
+[L]2023-12-04 15:44:46.965|23_48914790231455745| DBG |DESKTOP-4PAEICH|pool-1-thread-4|bus.go|100|1|System|Nil|"call Quit error, stack frames :
+    Error Message: reflect: Call with too many input arguments
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:100 (0x166014a)
+    C:/Program Files/Go/src/runtime/panic.go:914 (0x57aede)
+    C:/Program Files/Go/src/reflect/value.go:442 (0x61d70d)
+    C:/Program Files/Go/src/reflect/value.go:380 (0x61b878)
+    C:/Users/92346/Desktop/Transform Main Repo/transform-v2/framework/bus/bus.go:104 (0x16600a4)
+    C:/Program Files/Go/src/runtime/asm_amd64.s:1650 (0x5abaa0)
+"| 
+[L]2023-12-04 15:44:46.960|24_48914790231521281| DBG |DESKTOP-4PAEICH|pool-1-thread-5|bus.go|96|func1|System|Nil|"call ExitWebServer args = []"| 
+[L]2023-12-04 15:44:46.960|25_48914790231586817| DBG |DESKTOP-4PAEICH|pool-1-thread-6|bus.go|96|func1|System|Nil|"call ExitRpcServer args = []"| 
+[L]2023-12-04 15:44:46.968|26_48914790248101889| DBG |DESKTOP-4PAEICH|pool-1-thread-7|bus.go|96|func1|System|Nil|"call WebServerExited args = []"| 
+[L]2023-12-04 15:44:46.972|27_48914790248167425| DBG |DESKTOP-4PAEICH|pool-1-thread-8|bus.go|96|func1|System|Nil|"call log.info args = [Web server is closed. exit code =  0]"| 
+[L]2023-12-04 15:44:46.971|28_48914790248232961| DBG |DESKTOP-4PAEICH|pool-1-thread-9|bus.go|96|func1|System|Nil|"call log.info args = [grpc server is closeing...]"| 
+[L]2023-12-04 15:44:46.976|29_48914790248298497| INF |DESKTOP-4PAEICH|pool-1-thread-9|value.go|596|call|System|Nil|"grpc server is closeing..."| 
+[L]2023-12-04 15:44:46.968|30_48914790248364033| DBG |DESKTOP-4PAEICH|pool-1-thread-10|bus.go|96|func1|System|Nil|"call log.error args = [http: Server closed]"| 
+[L]2023-12-04 15:44:46.968|31_48914790248429569| DBG |DESKTOP-4PAEICH|pool-1-thread-11|bus.go|96|func1|System|Nil|"call log.info args = [web server is closed.]"| 
+[L]2023-12-04 15:44:46.974|32_48914790248495105| INF |DESKTOP-4PAEICH|pool-1-thread-8|value.go|596|call|System|Nil|"Web server is closed. exit code = 0"| 
+[L]2023-12-04 15:44:46.977|33_48914790248560641| ERR |DESKTOP-4PAEICH|pool-1-thread-10|value.go|596|call|System|Nil|"http: Server closed"| 
+[L]2023-12-04 15:44:46.972|34_48914790248626177| DBG |DESKTOP-4PAEICH|pool-1-thread-12|bus.go|96|func1|System|Nil|"call RpcServerExited args = []"| 
+[L]2023-12-04 15:44:51.069|11_48914797109983233| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-04 15:44:51.072|12_48914797126760449| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:account:jumeaux-account-svc:9400"| 
+[L]2023-12-04 15:44:51.075|13_48914797126825985| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:user:jumeaux-user-svc:9400"| 
+[L]2023-12-04 15:44:51.076|14_48914797126891521| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:appmanager:app-manager-svc:9400"| 
+[L]2023-12-04 15:44:51.082|15_48914797143537665| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:organization:jumeaux-organization-svc:9400"| 
+[L]2023-12-04 15:44:51.086|16_48914797143603201| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:storage:jumeaux-storage-svc:9500"| 
+[L]2023-12-04 15:44:51.088|17_48914797143668737| INF |DESKTOP-4PAEICH|pool-1-thread-1|grpc.go|105|ConnectGrpcServers|System|Nil|"building grpc conn for:messagebus:zixelmq-bus-svc:9090"| 
+[L]2023-12-04 15:44:51.116|18_48914797193869313| DBG |DESKTOP-4PAEICH|pool-1-thread-2|bus.go|96|func1|System|Nil|"call log.info args = [Listening and serving HTTP on listener what's bind with address  localhost:8742]"| 
+[L]2023-12-04 15:44:51.117|19_48914797193934849| INF |DESKTOP-4PAEICH|pool-1-thread-2|value.go|596|call|System|Nil|"Listening and serving HTTP on listener what's bind with address localhost:8742"| 

@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "./;services";
+
+service ConnectionService_XfusionService {
+  rpc SendPodInstance(C2S_SendPodInstanceRequest) returns (C2S_SendPodInstanceResponse);
+}
+
+message C2S_SendPodInstanceRequest {
+  string podIp = 1;
+  string modelId = 2;
+  string instanceId = 3;
+}
+
+message C2S_SendPodInstanceResponse {
+  string message = 1;
+}
+
+message C2S_WebSocketMessageSent{
+  string target = 1;
+  string extern = 2;
+  string action = 3;
+  string encode = 4;
+  oneof body {
+    string bodyString = 5;
+    XFusionMessage bodyXFusion = 6;
+    SessionMessage bodySession = 7;
+    MessengerMessage bodyMessenger = 8;
+  }
+}
+
+message C2S_WebSocketMessageReceived{
+  string source = 1;
+  string extern = 2;
+  string action = 3;
+  string encode = 4;
+  oneof body {
+    string bodyString = 5;
+    XFusionMessage bodyXFusion = 6;
+    SessionMessage bodySession = 7;
+    MessengerMessage bodyMessenger = 8;
+  }
+}
+
+message XFusionMessage{}
+
+message SessionMessage{
+  string message = 10;
+  uint64 timestamp = 20;
+  string openId = 30;
+  string action = 50;
+}
+
+message MessengerMessage {
+  string id = 10;
+  string linkageId = 15;
+  string appId = 20;
+  string openId = 25;
+  string classId = 30;
+  string subclassId = 35;
+  string messageTemplateId = 40;
+  string content = 45;
+  string source = 50;
+  string status = 55;
+  repeated string target= 60;
+  google.protobuf.Struct statusSync = 65;
+  string createdAt = 70;
+  string updatedAt = 75;
+  repeated MessengerMessageAction actions = 85;
+}
+
+message MessengerMessagePolicy {
+  string kafka = 1;
+  string http = 2;
+}
+
+message MessengerMessageAction {
+  string name = 1;
+  string tips = 2;
+  MessengerMessageActionTrigger action = 3;
+  string nextAction = 4;
+}
+
+message MessengerMessageActionTrigger {
+  string type = 1;
+  string url = 2;
+  string method = 3;
+  google.protobuf.Struct query = 4;
+  google.protobuf.Struct body = 5;
+}

@@ -1,0 +1,2 @@
+[L]2023-12-21 11:22:02.929|121_51352580047386625| INF |DESKTOP-4PAEICH|pool-1-thread-1|app.go|46|0|System|Nil|"framework initialize ..."| 
+[L]2023-12-21 11:22:02.938|122_51352580063770625| DBG |DESKTOP-4PAEICH|pool-1-thread-1|mongo.go|101|GetCollection|System|Nil|"conn.cli is nil"| 

@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package luckysheet;
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "cn.zixel.xfusion.luckysheet.lib";
+option java_outer_classname = "LuckysheetServiceProto";
+option go_package = "./;services";
+
+/**
+    报表服务
+ */
+
+/*******************************************
+                报表系统发布管理接口
+ *******************************************/
+service ReleaseService {
+    // 应用数据打包
+    // 供私有化部署时，打包指定应用的尚未发布、已发布版本的设计态数据，不包括运行时数据
+    rpc PackApps(C2S_AppPackReq_t) returns (google.protobuf.Empty) {};
+
+    // 加载应用数据
+    rpc UnpackApp(C2S_AppUnpackReq_t) returns (google.protobuf.Empty) {};
+
+}
+
+/*******************************************
+                通用数据模型
+ *******************************************/
+
+/*******************************************
+                后台管理数据模型
+ *******************************************/
+message C2S_AppPackReq_t {
+    string path = 10;   // 导出文件存储路径
+    message AppPackConfig {
+        string appId = 10;  // 应用id
+        optional bool includeUnPublish = 20;    // 是否包含正在设计中，尚未发布版本的数据，默认为true
+    }
+    repeated AppPackConfig apps = 20;  // 导出的应用及其配置
+}
+
+message C2S_AppUnpackReq_t {
+    string path = 10;           // 数据文件存储路径
+    string oldAppId = 11;       // 原应用appId，用于获取obs数据文件key
+
+    string newAppId = 20;       // 导入后新的应用appId
+    string tenantId = 21;       // 应用的创建租户
+
+    // 数据覆盖控制项
+    // 以下所述覆盖，均在newAppId已经存在数据的前提下考虑，newAppId下不存在数据时，取默认选项，新数据均可正常导入
+    // 因为无法获知已导入数据和原始数据之间的关系，所以只能全量覆盖或者全量不覆盖，在此基础上尽量细化可控制粒度
+
+    // 是否覆盖所有数据, 默认为false
+    // true - 清空newAppId下的全部现有数据后，添加新数据
+    // false - 未发布版本的(设计态)数据-由overrideUnPublish控制, 已发布版本的数据-只添加原数据中不存在的版本数据
+    optional bool overrideAll = 30;
+
+    // 是否覆盖未发布版本的设计态数据, 默认为false
+    // overrideAll=false时，才考虑此选项，否则忽略此控制选项
+    // true - 覆盖未发布版本的设计态数据
+    // false - 未发布版本的设计态数据-存在时不添加,不存在时正常添加
+    optional bool overrideUnPublish = 31;
+}

@@ -1,0 +1,47 @@
+debug: true
+service:
+  name: transform
+
+mongo:
+  - connectstring: mongodb://root:zixel%5E%26%2a%28YHN@172.16.0.106:32017/?authSource=admin
+    database: xdm
+    default: true
+  - connectstring: mongodb://root:zixel%5E%26%2a%28YHN@172.16.0.106:32017/?authSource=admin
+    database: xdm-data
+
+redis:
+  host: 172.16.0.106
+  port: 32379
+  password: zixel^&*(YHN
+  pool:
+    max-active: 2
+    min-idle: 10
+    max-wait: 100
+
+  timeout: 1000
+  retryInterval: 1000
+
+log:
+  path: logs
+  file: transform.log
+  level: debug
+
+web:
+  listen_addr:
+  listen_port: 8742
+  trusted_proxies:
+
+grpc:
+  listen_addr:
+  listen_port: 9742
+  connections:
+    account: jumeaux-account-svc:9400
+    user: jumeaux-user-svc:9400
+    appmanager: app-manager-svc:9400
+    organization: jumeaux-organization-svc:9400
+    storage: jumeaux-storage-svc:9500
+    messagebus: zixelmq-bus-svc:9090
+
+temporal:
+  address: localhost:7233
+  namespace: default
